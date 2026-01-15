@@ -1,0 +1,15 @@
+dash
+dash-bootstrap-components
+plotly
+pandas
+numpy
+scipy
+scikit-learn
+statsmodels
+python-dotenv
+google-generativeai
+google-cloud-aiplatform
+pip-system-certs
+streamlit
+folium
+streamlit-folium
