@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: forgotten-children
+    runtime: python
+    plan: free
+    region: singapore
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    # --workers 1: the free instance has 512MB and each worker loads the whole
+    #   dataset into memory independently.
+    # --timeout 120: the full pipeline re-runs on first request, well past
+    #   gunicorn's 30s default.
+    startCommand: >-
+      gunicorn dash_app:server
+      --bind 0.0.0.0:$PORT
+      --workers 1
+      --threads 4
+      --timeout 120
+      --access-logfile -
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      # sync:false means Render prompts for the value and never stores it in
+      # the repo. Set it in the dashboard, or with `render env set`.
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: minimax/minimax-m3:free

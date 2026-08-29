@@ -39,6 +39,10 @@ app = dash.Dash(
 )
 app.title = "Forgotten Children - UIDAI Professional Analytics"
 
+# WSGI entry point. Gunicorn (and therefore Render) serves `dash_app:server`;
+# `app.run` below is only used for local development.
+server = app.server
+
 # Data Loading Engine
 def load_all_data():
     loader = UIDAIDataLoader(os.getcwd())
@@ -493,4 +497,9 @@ def update_treemap_ai_insight(hoverData, global_context):
         return dash.no_update
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8050)
+    # Debug is opt-in: it must never be on for a public deployment.
+    app.run(
+        debug=os.environ.get('DASH_DEBUG', '').lower() == 'true',
+        host='0.0.0.0',
+        port=int(os.environ.get('PORT', 8050)),
+    )
