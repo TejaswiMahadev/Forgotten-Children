@@ -13,7 +13,8 @@ class TemporalAnalyzer:
         Identifies monthly and seasonal patterns.
         """
         if bio_df.empty or 'date' not in bio_df.columns:
-            return pd.DataFrame(), {}
+            # Must match the 3-value happy path -- dash_app unpacks three.
+            return pd.DataFrame(), pd.DataFrame(), {}
             
         df = bio_df.copy()
         df['year_month'] = df['date'].dt.to_period('M')
