@@ -1,0 +1,40 @@
+# --- Credentials -------------------------------------------------------------
+# GeminiAnalyzer auto-discovers service-account.json from the repo root, so the
+# natural place to put a GCP key is also the place `git add .` would commit it.
+.env
+.env.*
+!.env.example
+service-account.json
+service_account.json
+*-service-account.json
+credentials.json
+client_secret*.json
+*.pem
+*.key
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+build/
+dist/
+
+# --- Virtual environments ----------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# --- Generated data ----------------------------------------------------------
+# processor.py writes here; raw UIDAI extracts are large and not ours to publish.
+processed_data/
+*.log
+
+# --- Tooling / editors -------------------------------------------------------
+.vscode/
+.idea/
+.ipynb_checkpoints/
+.pytest_cache/
+.DS_Store
+Thumbs.db

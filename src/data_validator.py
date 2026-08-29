@@ -52,7 +52,13 @@ class DataValidator:
         # 3. Negative Counts (DQ-3)
         count_cols = [col for col in df.columns if 'age_' in col or 'bio_' in col or 'demo_' in col]
         for col in count_cols:
-            neg_count = (df[col] < 0).sum()
+            # Compare numerically: a string in a count column used to raise
+            # TypeError before any check could report it.
+            numeric = pd.to_numeric(df[col], errors='coerce')
+            non_numeric = int(numeric.isna().sum() - df[col].isna().sum())
+            if non_numeric > 0:
+                report['warnings'].append(f"Found {non_numeric} non-numeric values in column '{col}'.")
+            neg_count = int((numeric < 0).sum())
             if neg_count > 0:
                 report['metrics']['negative_counts'] += neg_count
                 report['warnings'].append(f"Found {neg_count} negative counts in column '{col}'.")

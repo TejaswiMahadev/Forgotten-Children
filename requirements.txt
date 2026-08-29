@@ -7,9 +7,10 @@ scipy
 scikit-learn
 statsmodels
 python-dotenv
-google-generativeai
-google-cloud-aiplatform
 pip-system-certs
 streamlit
 folium
 streamlit-folium
+
+# AI narrative layer talks to OpenRouter over stdlib urllib -- no SDK needed.
+# python-dotenv (above) loads OPENROUTER_API_KEY from .env.

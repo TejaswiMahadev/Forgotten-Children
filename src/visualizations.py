@@ -59,13 +59,21 @@ def create_geographic_mapbox(df):
     map_df['lat'] = [c[0] for c in coords]
     map_df['lon'] = [c[1] for c in coords]
     
-    fig = px.scatter_mapbox(
+    # Plotly 6.0 removed px.scatter_mapbox in favour of the MapLibre-backed
+    # px.scatter_map. Support both so the map renders on any recent Plotly.
+    scatter_fn = getattr(px, 'scatter_map', None)
+    style_key = 'map_style'
+    if scatter_fn is None:
+        scatter_fn = px.scatter_mapbox
+        style_key = 'mapbox_style'
+
+    fig = scatter_fn(
         map_df, lat="lat", lon="lon", color="risk_level",
         size="update_gap", color_discrete_map=RISK_COLORS,
         hover_name="pincode", hover_data=["district", "update_rate"],
         zoom=4, height=500
     )
-    fig.update_layout(mapbox_style="carto-darkmatter")
+    fig.update_layout(**{style_key: "carto-darkmatter"})
     return set_dark_theme(fig)
 
 def create_priority_bar_chart(df):
