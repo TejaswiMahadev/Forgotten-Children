@@ -17,7 +17,7 @@ from src.analytics.temporal_analyzer import TemporalAnalyzer
 from src.analytics.forecasting import ForecastingEngine
 from src.analytics.anomaly_detector import AnomalyDetector
 from src.analytics.report_generator import ReportGenerator
-from src.analytics.ai_analyzer import GeminiAnalyzer
+from src.analytics.ai_analyzer import AIAnalyzer
 import src.visualizations as viz
 
 # Global AI Analyzer instance
@@ -26,7 +26,7 @@ _analyzer = None
 def get_analyzer():
     global _analyzer
     if _analyzer is None:
-        _analyzer = GeminiAnalyzer()
+        _analyzer = AIAnalyzer()
     return _analyzer
 
 # Initialize Dash App
@@ -239,7 +239,7 @@ def populate_dashboard(data):
     demo_df = pd.DataFrame(data['demographic'])
     
     # Generate Global AI Context for smart hovering
-    ai_context = GeminiAnalyzer.extract_summary_for_ai(
+    ai_context = AIAnalyzer.extract_summary_for_ai(
         priority_df, forecast_df, anomaly_df,
         enroll_df=enroll_df, bio_df=bio_df, demo_df=demo_df
     )
